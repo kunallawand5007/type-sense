@@ -1,0 +1,108 @@
+Supported data type
+https://typesense.org/docs/0.11.2/api/collections.html#arguments
+
+
+curl http://localhost:8108/health
+
+{"ok":true}
+
+export TYPESENSE_API_KEY=xyz
+
+
+kunallawand@AUY-LT-506 ~ % mkdir "$(pwd)"/typesense-data 
+./typesense-server --data-dir="$(pwd)"/typesense-data --api-key=$TYPESENSE_API_KEY --enable-cors
+
+
+experyment
+
+
+cd /tmp
+curl -O https://dl.typesense.org/datasets/books.jsonl.gz
+gunzip books.jsonl.gz
+
+
+curl "${TYPESENSE_HOST}/collections" \
+      -X POST \
+      -H "Content-Type: application/json" \
+      -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" -d '{
+        "name": "books",
+        "fields": [
+          {"name": "title", "type": "string" },
+          {"name": "authors", "type": "string[]", "facet": true },
+
+          {"name": "publication_year", "type": "int32", "facet": true },
+          {"name": "ratings_count", "type": "int32" },
+          {"name": "average_rating", "type": "float" }       
+        ],
+        "default_sorting_field": "ratings_count"
+      }'
+
+
+curl "${TYPESENSE_HOST}/collections/books/documents/import" \
+      -X POST \
+      -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" \
+      --data-binary @/users/kunallawand/test-data/books.jsonl
+
+
+Argument pass to API:
+
+https://typesense.org/docs/0.11.2/api/documents.html#arguments
+
+
+Delete by _Id:
+
+Delete an individual document from a collection by using its id.
+curl -H "X-TYPESENSE-API-KEY: ${TYPESENSE_API_KEY}" -X DELETE \
+    "http://localhost:8108/collections/companies/documents/124"
+
+
+If an explicit id field is not set, Typesense will auto-generate one for the document and can return it if you set return_ids=true as a parameter to the import endpoint. You will then have to save this id field in your database and use that to update the same record in the future.
+#
+
+
+https://typesense.org/docs/0.23.0/api/collections.html#with-auto-schema-detection
+
+Imaging model :
+{
+  "name": "images",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "store": false
+    },
+    {
+      "name": "embedding",
+      "type": "float[]",
+      "embed": {
+        "from": [
+          "image"
+        ],
+        "model_config": {
+          "model_name": "ts/clip-vit-b-p32"
+        }
+      }
+    }
+  ]
+}
+
+Semantic _search
+device to type things on
+
+pointing device
+average_rating
+
+
+
+
+experyment
+
+
+Admin-KEY-    "value": "J1vajClkOKZ2rySA5y2KaYvIghNlyF13"
+Search-only-key : "value": "8maWoDd3SPVAqEPBfP2h7qY7OJ79oTJZ"
+
+

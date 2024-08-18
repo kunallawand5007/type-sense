@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "4830bb05-e8b4-4660-85cc-17de8145a729",
+		"name": "Semantic-Search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37505380"
+	},
+	"item": [
+		{
+			"name": "create_collection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"products\",\n    \"fields\": [\n        {\n            \"name\": \"product_name\",\n            \"type\": \"string\"\n        },\n        {\n            \"name\": \"embedding\",\n            \"type\": \"float[]\",\n            \"embed\": {\n                \"from\": [\n                    \"product_name\"\n                ],\n                \"model_config\": {\n                    \"model_name\": \"ts/all-MiniLM-L12-v2\"\n                }\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "insert_data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"product_name\": \"Cell phone\"}\n            {\"product_name\": \"Laptop\"}\n            {\"product_name\": \"Desktop\"}\n            {\"product_name\": \"Printer\"}\n            {\"product_name\": \"Keyboard\"}\n            {\"product_name\": \"Monitor\"}\n            {\"product_name\": \"Mouse\"}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections/products/documents/import?return_id=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections",
+						"products",
+						"documents",
+						"import"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "create",
+							"disabled": true
+						},
+						{
+							"key": "return_id",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searches\": [\n        {\n            \"q\": \"pointing device\",\n            \"query_by\": \"embedding\",\n            \"collection\": \"products\",\n            \"prefix\": \"false\",\n            \"exclude_fields\": \"embedding\",\n            \"per_page\": 1\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/multi_search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"multi_search"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "create",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

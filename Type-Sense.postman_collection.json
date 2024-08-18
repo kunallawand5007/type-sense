@@ -1,0 +1,464 @@
+{
+	"info": {
+		"_postman_id": "292191b5-a37a-4205-9cbf-ee41ba276ed8",
+		"name": "Type-Sense",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37505380"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8108/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch-collection",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8108/collections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8108/collections/books/documents/search?q=experyment&query_by=title&filter_by=average_rating:>3.6&sort_by=ratings_count:asc&facet_by=authors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections",
+						"books",
+						"documents",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "experyment",
+							"description": "The query text to search for in the collection."
+						},
+						{
+							"key": "query_by",
+							"value": "title",
+							"description": "fields on which we are quering"
+						},
+						{
+							"key": "filter_by",
+							"value": "average_rating:>3.6",
+							"description": "format for field:operator"
+						},
+						{
+							"key": "sort_by",
+							"value": "ratings_count:asc"
+						},
+						{
+							"key": "facet_by",
+							"value": "authors",
+							"description": "facetin search"
+						},
+						{
+							"key": "group_by",
+							"value": "authors",
+							"disabled": true
+						},
+						{
+							"key": "cache_ttl",
+							"value": "60",
+							"description": "default",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_collection",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8108/collections/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_collection_with_schema",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"books\",\n    \"fields\": [\n        {\n            \"name\": \"title\",\n            \"type\": \"string\"\n        },\n        {\n            \"name\": \"authors\",\n            \"type\": \"string[]\",\n            \"facet\": true\n        },\n        {\n            \"name\": \"publication_year\",\n            \"type\": \"int32\",\n            \"facet\": true\n        },\n        {\n            \"name\": \"ratings_count\",\n            \"type\": \"int32\"\n        },\n        {\n            \"name\": \"average_rating\",\n            \"type\": \"float\"\n        }\n    ],\n    \"default_sorting_field\": \"ratings_count\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_collection_without_schema",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"companies\",\n    \"fields\": [\n        {\n            \"name\": \".*\",\n            \"type\": \"auto\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BULK_IMPORT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/Users/kunallawand/test-data/books.jsonl"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections/books/documents/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections",
+						"books",
+						"documents",
+						"import"
+					],
+					"query": [
+						{
+							"key": "return_id",
+							"value": "true",
+							"description": "returning id of imoprted document",
+							"disabled": true
+						},
+						{
+							"key": "return_doc",
+							"value": "false",
+							"description": "return entire document back in response",
+							"disabled": true
+						},
+						{
+							"key": "action",
+							"value": "upsert",
+							"description": "create(default),upsert,update->update partialexsting,emplace->create new document",
+							"disabled": true
+						},
+						{
+							"key": "batch_size",
+							"value": "40",
+							"description": "document to ingest",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MPORT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"The Hunger Games\",\n    \"authors\": [\n        \"Suzanne Collins\"\n    ],\n    \"publication_year\": 2008,\n    \"id\": \"1\",\n    \"average_rating\": 4.34,\n    \"image_url\": \"https://images.gr-assets.com/books/1447303603m/2767052.jpg\",\n    \"ratings_count\": 4780653\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/collections/books/documents?return_id=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"collections",
+						"books",
+						"documents"
+					],
+					"query": [
+						{
+							"key": "return_doc",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "return_id",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "i_search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searches\": [\n        {\n            \"collection\": \"images\",\n            \"q\": \"animals\",\n            \"query_by\": \"embedding\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/multi_search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"multi_search"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create_image_schema",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-typesense-api-key",
+								"value": "xyz",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"images\",\n  \"fields\": [\n    {\n      \"name\": \"name\",\n      \"type\": \"string\"\n    },\n    {\n      \"name\": \"image\",\n      \"type\": \"image\",\n      \"store\": false\n    },\n    {\n      \"name\": \"embedding\",\n      \"type\": \"float[]\",\n      \"embed\": {\n        \"from\": [\n          \"image\"\n        ],\n        \"model_config\": {\n          \"model_name\": \"ts/clip-vit-b-p32\"\n        }\n      }\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8108/multi_search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8108",
+							"path": [
+								"multi_search"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "multi_search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searches\": [\n        {\n            \"collection\": \"books\",\n            \"q\": \"Mahatama\",\n            \"query_by\": \"authors\"\n        },\n        {\n            \"collection\": \"books\",\n            \"q\": \"*\",\n            \"filter_by\": \"average_rating:>4\",\n            \"offset\": 1,\n            \"limit\": 12\n        },\n        {\n            \"collection\": \"products\",\n            \"q\": \"mouse\",\n            \"query_by\": \"product_name\",\n            \"exclude_fields\": \"embedding\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/multi_search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"multi_search"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create_image_schema",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-typesense-api-key",
+								"value": "xyz",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"images\",\n  \"fields\": [\n    {\n      \"name\": \"name\",\n      \"type\": \"string\"\n    },\n    {\n      \"name\": \"image\",\n      \"type\": \"image\",\n      \"store\": false\n    },\n    {\n      \"name\": \"embedding\",\n      \"type\": \"float[]\",\n      \"embed\": {\n        \"from\": [\n          \"image\"\n        ],\n        \"model_config\": {\n          \"model_name\": \"ts/clip-vit-b-p32\"\n        }\n      }\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8108/multi_search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8108",
+							"path": [
+								"multi_search"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

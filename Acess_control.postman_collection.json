@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "01a07188-04a1-45ec-a9a5-a68d5c5da080",
+		"name": "Acess_control",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37505380"
+	},
+	"item": [
+		{
+			"name": "list_keys",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8108/keys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"keys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_key",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Admin key\",\n    \"actions\": [\n        \"*\"\n    ],\n    \"collections\": [\n        \"*\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/keys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"keys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search_only_key",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-typesense-api-key",
+						"value": "xyz",
+						"type": "text"
+					},
+					{
+						"key": "return_id",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Search-only key\",\n    \"actions\": [\n        \"documents:search\"\n    ],\n    \"collections\": [\n        \"*\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8108/keys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8108",
+					"path": [
+						"keys"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
